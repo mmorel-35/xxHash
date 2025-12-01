@@ -1,0 +1,24 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+cc_library(
+    name = "xxhsum_lib",
+    srcs = glob(
+        ["*.c"],
+        exclude = ["xxhsum.c"],
+    ),
+    hdrs = glob(["*.h"]),
+    # Some of the tests include c files, this allows for that.
+    textual_hdrs = glob(["*.c"]),
+    visibility = [
+        "//:__pkg__",
+        "//tests:__subpackages__",
+    ],
+    deps = ["//:xxhash"],
+)
+
+cc_binary(
+    name = "xxhsum",
+    srcs = ["xxhsum.c"],
+    visibility = ["//visibility:public"],
+    deps = [":xxhsum_lib"],
+)

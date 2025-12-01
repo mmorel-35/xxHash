@@ -1,4 +1,4 @@
-load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
     name = "xxhash",
@@ -13,8 +13,6 @@ cc_library(
         "@platforms//cpu:x86_64": ["xxh_x86dispatch.h"],
         "//conditions:default": [],
     }),
-    include_prefix = "xxhash",
-    includes = ["."],
     local_defines = select({
         "@platforms//cpu:x86_64": ["XXHSUM_DISPATCH=1"],
         "//conditions:default": [],
@@ -22,19 +20,14 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
-cc_library(
-    name = "xxhsum_lib",
-    srcs = glob(["cli/*.c"]),
-    hdrs = glob(["cli/*.h"]),
-    # Some of the tests include c files, this allows for that.
-    textual_hdrs = glob(["cli/*.c"]),
-    visibility = ["//tests:__subpackages__"],
-    deps = [":xxhash"],
+alias(
+    name = "xxhsum",
+    actual = "//cli:xxhsum",
+    visibility = ["//visibility:public"],
 )
 
-cc_binary(
-    name = "xxhsum",
-    srcs = ["cli/xxhsum.c"],
-    visibility = ["//visibility:public"],
-    deps = [":xxhsum_lib"],
+alias(
+    name = "xxhsum_lib",
+    actual = "//cli:xxhsum_lib",
+    visibility = ["//tests:__subpackages__"],
 )

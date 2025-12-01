@@ -4,5 +4,4 @@ cc_fuzz_test(
     name = "xxhash_fuzzer",
     srcs = ["fuzzer.c"],
     deps = ["//:xxhash"],
-    visibility = ["//visibility:public"],
 )

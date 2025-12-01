@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
 
       - name: Setup Bazelisk
-        uses: bazel-contrib/setup-bazel@0b8cc3ddbc98c1cd6c0d85eb2ab40d36aa5b3c4d # v0.14.0
+        uses: bazel-contrib/setup-bazel@e8776f58fb6a6e9055cbaf1b38c52ccc5247e9c4 # v0.14.0
         with:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}

@@ -1,4 +1,4 @@
-load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 
 cc_library(
     name = "xxhash",
@@ -28,6 +28,7 @@ cc_library(
     hdrs = glob(["cli/*.h"]),
     # Some of the tests include c files, this allows for that.
     textual_hdrs = glob(["cli/*.c"]),
+    visibility = ["//tests:__subpackages__"],
     deps = [":xxhash"],
 )
 
@@ -36,31 +37,4 @@ cc_binary(
     srcs = ["cli/xxhsum.c"],
     visibility = ["//visibility:public"],
     deps = [":xxhsum_lib"],
-)
-
-cc_test(
-    name = "multi_include_test",
-    srcs = ["tests/multiInclude.c"],
-    deps = [":xxhash"],
-)
-
-cc_test(
-    name = "sanity_test",
-    srcs = [
-        "tests/sanity_test.c",
-        "tests/sanity_test_vectors.h",
-    ],
-    deps = [
-        ":xxhash",
-        ":xxhsum_lib",
-    ],
-)
-
-cc_test(
-    name = "vectors_generator_test",
-    srcs = ["tests/sanity_test_vectors_generator.c"],
-    deps = [
-        ":xxhash",
-        ":xxhsum_lib",
-    ],
 )

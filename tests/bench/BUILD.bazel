@@ -1,0 +1,49 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+cc_library(
+    name = "benchfn",
+    srcs = [
+        "benchfn.c",
+        "timefn.c",
+    ],
+    hdrs = [
+        "benchfn.h",
+        "timefn.h",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+cc_library(
+    name = "bhDisplay",
+    srcs = ["bhDisplay.c"],
+    hdrs = [
+        "bhDisplay.h",
+        "benchHash.h",
+    ],
+    deps = [":benchfn"],
+    visibility = ["//visibility:private"],
+)
+
+cc_library(
+    name = "benchHash",
+    srcs = ["benchHash.c"],
+    hdrs = [
+        "benchHash.h",
+        "hashes.h",
+    ],
+    deps = [
+        ":benchfn",
+        "//:xxhash",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+cc_binary(
+    name = "bench",
+    srcs = ["main.c"],
+    deps = [
+        ":benchHash",
+        ":bhDisplay",
+    ],
+    visibility = ["//visibility:public"],
+)

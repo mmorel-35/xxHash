@@ -1,0 +1,28 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "multi_include_test",
+    srcs = ["multiInclude.c"],
+    deps = ["//:xxhash"],
+)
+
+cc_test(
+    name = "sanity_test",
+    srcs = [
+        "sanity_test.c",
+        "sanity_test_vectors.h",
+    ],
+    deps = [
+        "//:xxhash",
+        "//:xxhsum_lib",
+    ],
+)
+
+cc_test(
+    name = "vectors_generator_test",
+    srcs = ["sanity_test_vectors_generator.c"],
+    deps = [
+        "//:xxhash",
+        "//:xxhsum_lib",
+    ],
+)

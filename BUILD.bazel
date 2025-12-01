@@ -19,15 +19,3 @@ cc_library(
     }),
     visibility = ["//visibility:public"],
 )
-
-alias(
-    name = "xxhsum",
-    actual = "//cli:xxhsum",
-    visibility = ["//visibility:public"],
-)
-
-alias(
-    name = "xxhsum_lib",
-    actual = "//cli:xxhsum_lib",
-    visibility = ["//tests:__subpackages__"],
-)

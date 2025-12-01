@@ -20,7 +20,10 @@ cc_library(
         "bhDisplay.h",
         "benchHash.h",
     ],
-    deps = [":benchfn"],
+    deps = [
+        ":benchHash",
+        ":benchfn",
+    ],
     visibility = ["//visibility:private"],
 )
 

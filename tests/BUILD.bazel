@@ -14,15 +14,19 @@ cc_test(
     ],
     deps = [
         "//:xxhash",
-        "//:xxhsum_lib",
+        "//cli:xxhsum_lib",
     ],
 )
 
 cc_test(
     name = "vectors_generator_test",
     srcs = ["sanity_test_vectors_generator.c"],
+    copts = select({
+        "@platforms//os:windows": ["/std:c11"],
+        "//conditions:default": [],
+    }),
     deps = [
         "//:xxhash",
-        "//:xxhsum_lib",
+        "//cli:xxhsum_lib",
     ],
 )

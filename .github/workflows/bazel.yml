@@ -29,11 +29,23 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
-      - name: Build
+      - name: Build (Unix)
+        if: runner.os != 'Windows'
         run: bazel build //...
 
-      - name: Test
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        # Exclude fuzz targets on Windows (rules_fuzzing uses POSIX dirent.h)
+        run: bazel build //... -- -//fuzz/...
+
+      - name: Test (Unix)
+        if: runner.os != 'Windows'
         run: bazel test //...
+
+      - name: Test (Windows)
+        if: runner.os == 'Windows'
+        # Exclude fuzz targets on Windows (rules_fuzzing uses POSIX dirent.h)
+        run: bazel test //... -- -//fuzz/...
 
       - name: Run xxhsum binary
         run: |

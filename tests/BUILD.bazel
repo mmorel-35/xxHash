@@ -27,6 +27,6 @@ cc_test(
     }),
     deps = [
         "//:xxhash",
-        "//cli:xxhsum_lib",
+        "//cli:xsum_os_specific_lib",
     ],
 )

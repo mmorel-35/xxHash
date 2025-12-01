@@ -6,20 +6,30 @@ cc_library(
         ["*.c"],
         exclude = [
             "xxhsum.c",
-            "xsum_os_specific.c",  # Contains main(), should only be in binary
+            "xsum_os_specific.c",  # Compiled separately: with XSUM_NO_MAIN for lib, without for binary
         ],
     ),
     hdrs = glob(["*.h"]),
     # Some of the tests include c files, this allows for that.
-    textual_hdrs = glob(
-        ["*.c"],
-        exclude = ["xsum_os_specific.c"],
-    ),
+    textual_hdrs = glob(["*.c"]),
     visibility = [
         "//:__pkg__",
         "//tests:__subpackages__",
     ],
     deps = ["//:xxhash"],
+)
+
+# Library version of xsum_os_specific without main() for tests that link with xxhsum_lib
+cc_library(
+    name = "xsum_os_specific_lib",
+    srcs = ["xsum_os_specific.c"],
+    hdrs = glob(["*.h"]),
+    local_defines = ["XSUM_NO_MAIN"],
+    visibility = ["//tests:__subpackages__"],
+    deps = [
+        ":xxhsum_lib",
+        "//:xxhash",
+    ],
 )
 
 cc_binary(

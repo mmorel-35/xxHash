@@ -37,4 +37,4 @@ jobs:
 
       - name: Run xxhsum binary
         run: |
-          echo "Hello, World!" | bazel run //:xxhsum
+          echo "Hello, World!" | bazel run //cli:xxhsum

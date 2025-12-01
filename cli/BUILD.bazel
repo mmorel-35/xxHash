@@ -4,11 +4,17 @@ cc_library(
     name = "xxhsum_lib",
     srcs = glob(
         ["*.c"],
-        exclude = ["xxhsum.c"],
+        exclude = [
+            "xxhsum.c",
+            "xsum_os_specific.c",  # Contains main(), should only be in binary
+        ],
     ),
     hdrs = glob(["*.h"]),
     # Some of the tests include c files, this allows for that.
-    textual_hdrs = glob(["*.c"]),
+    textual_hdrs = glob(
+        ["*.c"],
+        exclude = ["xsum_os_specific.c"],
+    ),
     visibility = [
         "//:__pkg__",
         "//tests:__subpackages__",
@@ -18,7 +24,10 @@ cc_library(
 
 cc_binary(
     name = "xxhsum",
-    srcs = ["xxhsum.c"],
+    srcs = [
+        "xsum_os_specific.c",  # Contains main()
+        "xxhsum.c",  # Contains XSUM_main()
+    ],
     visibility = ["//visibility:public"],
     deps = [":xxhsum_lib"],
 )

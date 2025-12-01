@@ -1,0 +1,12 @@
+load("@rules_fuzzing//fuzzing:cc_defs.bzl", "cc_fuzz_test")
+
+cc_fuzz_test(
+    name = "xxhash_fuzzer",
+    srcs = ["fuzzer.c"],
+    # rules_fuzzing uses POSIX dirent.h which doesn't exist on Windows
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    deps = ["//:xxhash"],
+)

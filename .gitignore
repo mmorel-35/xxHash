@@ -62,3 +62,7 @@ tests/unicode_test*
 
 # Doxygen
 doxygen/
+
+# Bazel
+bazel-*
+MODULE.bazel.lock

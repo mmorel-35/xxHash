@@ -1,0 +1,40 @@
+name: Bazel CI
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bazel-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Bazel ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Setup Bazelisk
+        uses: bazel-contrib/setup-bazel@0b8cc3ddbc98c1cd6c0d85eb2ab40d36aa5b3c4d # v0.14.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Build
+        run: bazel build //...
+
+      - name: Test
+        run: bazel test //...
+
+      - name: Run xxhsum binary
+        run: |
+          echo "Hello, World!" | bazel run //:xxhsum
